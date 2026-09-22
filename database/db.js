@@ -93,7 +93,7 @@ function seedDefaults() {
     dbHelper.setSetting('ads_enabled', 'true');
     dbHelper.setSetting('adsense_client_id', '');
     dbHelper.setSetting('auto_publish_enabled', 'true');
-    dbHelper.setSetting('cron_schedule', '0 8,12,16,20 * * *');
+    dbHelper.setSetting('cron_schedule', '0 * * * *');
   }
 
   // Default Custom Post Footer Affiliate Promo Settings

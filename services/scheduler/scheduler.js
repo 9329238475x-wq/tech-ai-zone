@@ -65,24 +65,27 @@ class Scheduler {
         return { success: false, message: 'No eligible topics found' };
       }
 
-      // 2. Try the top candidate, with self-healing fallback to next candidates if quality check fails
-      let publishedResult = null;
-      const candidatesToTry = rankedTopics.slice(0, 3);
+      // 2. Publish two posts per cycle, using fallback candidates when quality checks fail.
+      const publishedResults = [];
+      let candidateIndex = 0;
 
-      for (const candidate of candidatesToTry) {
+      while (publishedResults.length < 2 && candidateIndex < rankedTopics.length) {
+        const candidate = rankedTopics[candidateIndex++];
         console.log(`[Scheduler] Attempting candidate: "${candidate.title}" (Score: ${candidate.finalScore})`);
         const result = await publisher.processAndPublishTopic(candidate);
 
         if (result && result.success) {
-          publishedResult = result;
-          break; // Successfully published highest quality post
+          publishedResults.push(result);
+          console.log(`[Scheduler] Published ${publishedResults.length}/2 posts this cycle.`);
         } else {
-          console.warn(`[Scheduler] Candidate failed quality gate or had errors. Trying next eligible topic in self-healing pipeline.`);
+          console.warn('[Scheduler] Candidate failed quality gate or had errors. Trying the next eligible topic.');
         }
       }
 
       this.isRunningCycle = false;
-      return publishedResult || { success: false, message: 'Quality gate held candidate posts' };
+      return publishedResults.length > 0
+        ? { success: true, publishedCount: publishedResults.length, results: publishedResults }
+        : { success: false, publishedCount: 0, message: 'Quality gate held candidate posts' };
 
     } catch (err) {
       this.isRunningCycle = false;

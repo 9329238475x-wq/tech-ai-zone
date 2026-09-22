@@ -60,9 +60,9 @@ app.use((req, res, next) => {
     const viewsRow = db.get("SELECT COUNT(*) as count FROM analytics WHERE event_type = 'pageview'");
     const totalViews = (viewsRow?.count || 0) + 120; // Include baseline audience impressions
 
-    const cronRaw = db.getSetting('cron_schedule', '0 */2 * * *');
-    let cronSummary = 'Active Every 2h';
-    if (cronRaw.includes('*/1')) cronSummary = 'Every 1h';
+    const cronRaw = db.getSetting('cron_schedule', '0 * * * *');
+    let cronSummary = 'Every 1h';
+    if (cronRaw === '0 * * * *' || cronRaw.includes('*/1')) cronSummary = 'Every 1h';
     else if (cronRaw.includes('*/2')) cronSummary = 'Every 2h';
     else if (cronRaw.includes('*/4')) cronSummary = 'Every 4h';
     else if (cronRaw.includes('8,12,16,20')) cronSummary = '4x Daily';
@@ -413,7 +413,7 @@ app.get('/admin', (req, res) => {
     custom_ad_incontent: db.getSetting('custom_ad_incontent', ''),
     custom_ad_footer: db.getSetting('custom_ad_footer', ''),
     auto_publish_enabled: db.getSetting('auto_publish_enabled', 'true'),
-    cron_schedule: db.getSetting('cron_schedule', '0 8,12,16,20 * * *'),
+    cron_schedule: db.getSetting('cron_schedule', '0 * * * *'),
     groq_model: db.getSetting('groq_model', 'llama-3.3-70b-versatile')
   };
 
