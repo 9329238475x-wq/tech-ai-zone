@@ -1413,6 +1413,22 @@ img {
   align-items: center;
 }
 
+.ad-network-embed iframe {
+  display: block;
+  max-width: 100%;
+  border: 0;
+}
+
+.ad-in-content .ad-network-embed {
+  min-height: 90px;
+}
+
+.ad-sidebar .ad-network-embed,
+.ad-sidebar-mid .ad-network-embed,
+.ad-left-sidebar .ad-network-embed {
+  min-height: 250px;
+}
+
 .ad-guaranteed-fallback {
   width: 100%;
 }

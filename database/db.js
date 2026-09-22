@@ -90,7 +90,7 @@ function seedDefaults() {
     dbHelper.setSetting('site_name', 'Tech AI Zone');
     dbHelper.setSetting('site_tagline', 'The Leading Pulse of AI Innovations & Viral Tech');
     dbHelper.setSetting('groq_model', 'llama-3.3-70b-versatile');
-    dbHelper.setSetting('ads_enabled', 'false');
+    dbHelper.setSetting('ads_enabled', 'true');
     dbHelper.setSetting('adsense_client_id', '');
     dbHelper.setSetting('auto_publish_enabled', 'true');
     dbHelper.setSetting('cron_schedule', '0 8,12,16,20 * * *');

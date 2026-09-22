@@ -1,17 +1,46 @@
 const db = require('../../database/db');
 
+const DEFAULT_AD_SLOTS = {
+  header: `<script>
+  atOptions = {
+    'key' : '066c55f53a09379ed066e20c581af91e',
+    'format' : 'iframe',
+    'height' : 90,
+    'width' : 728,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highrevenueformat.com/066c55f53a09379ed066e20c581af91e/invoke.js"></script>`,
+  inContent: `<script async="async" data-cfasync="false" src="https://pl31464429.profitableratecpmnetwork.com/7eda509df34ae370553a008592306516/invoke.js"></script>
+<div id="container-7eda509df34ae370553a008592306516"></div>`,
+  footer: `<script>
+  atOptions = {
+    'key' : '066c55f53a09379ed066e20c581af91e',
+    'format' : 'iframe',
+    'height' : 90,
+    'width' : 728,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highrevenueformat.com/066c55f53a09379ed066e20c581af91e/invoke.js"></script>`
+};
+
+const DEFAULT_GLOBAL_ADS = `<script src="https://pl31464426.profitableratecpmnetwork.com/37/21/d9/3721d973703ea3dd69adfb5b435e3c5e.js"></script>
+<script src="https://pl31464427.profitableratecpmnetwork.com/3c/c6/54/3cc65441cb5642afa4f1c95a67329371.js"></script>`;
+
 class AdsEngine {
   getClientId() {
     return db.getSetting('adsense_client_id', '') || process.env.ADSENSE_CLIENT_ID || '';
   }
 
   isEnabled() {
-    return (db.getSetting('ads_enabled', 'false') === 'true') || (process.env.ADS_ENABLED === 'true');
+    return (db.getSetting('ads_enabled', 'true') === 'true') || (process.env.ADS_ENABLED === 'true');
   }
 
   getHeadScript() {
     if (!this.isEnabled()) return '';
     let headAd = db.getSetting('global_head_ad', '');
+    if (!headAd || /pl31463064|pl31463065/.test(headAd)) headAd = DEFAULT_GLOBAL_ADS;
     if (headAd && headAd.trim()) {
       // Ensure third-party ad scripts are non-blocking so they never slow down the website
       return headAd
@@ -22,11 +51,13 @@ class AdsEngine {
   }
 
   getCustomAd(slotType) {
-    const slotCode = db.getSetting(`custom_ad_${slotType}`, '');
+    const settingKey = slotType === 'in-content' ? 'custom_ad_incontent' : `custom_ad_${slotType}`;
+    const slotCode = db.getSetting(settingKey, '');
     if (slotCode && slotCode.trim()) return slotCode.trim();
 
     const globalCode = db.getSetting('global_custom_ad', '');
-    if (globalCode && globalCode.trim()) {
+    const isLegacyGlobalCode = /pl31462432|container-a53a0692f925c88de0a6531002929bb1/.test(globalCode);
+    if (!isLegacyGlobalCode && globalCode && globalCode.trim()) {
       // If code contains a single unique container ID (e.g. Adsterra Native Banner),
       // render it only in primary slot to avoid duplicate ID collision.
       const hasSpecificContainer = /id=["']container-[^"']+["']/i.test(globalCode);
@@ -38,6 +69,9 @@ class AdsEngine {
       }
       return globalCode.trim();
     }
+
+    const defaultSlot = slotType === 'in-content' ? DEFAULT_AD_SLOTS.inContent : DEFAULT_AD_SLOTS[slotType];
+    if (defaultSlot) return defaultSlot;
     return null;
   }
 
@@ -136,7 +170,8 @@ class AdsEngine {
 
             setTimeout(function() {
               var container = embed.querySelector('[id^="container-"]');
-              var hasLiveAd = container && (container.children.length > 0 || container.offsetHeight > 30);
+              var iframe = embed.querySelector('iframe');
+              var hasLiveAd = (container && (container.children.length > 0 || container.offsetHeight > 30)) || iframe;
               if (!hasLiveAd) {
                 embed.style.display = 'none';
                 fallback.style.display = 'block';
