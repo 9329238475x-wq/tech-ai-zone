@@ -9,6 +9,15 @@ const limits = require('../../config/limits');
 const db = require('../../database/db');
 
 class TopicSelector {
+  shuffle(items) {
+    const shuffled = [...items];
+    for (let index = shuffled.length - 1; index > 0; index--) {
+      const swapIndex = Math.floor(Math.random() * (index + 1));
+      [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+    }
+    return shuffled;
+  }
+
   canonicalCategory(category, title = '') {
     const value = `${category || ''} ${title || ''}`.toLowerCase();
     if (/gadget|phone|iphone|android|laptop|wearable|car|vehicle|robot|chip|gpu|hardware|device/.test(value)) {
@@ -75,11 +84,37 @@ class TopicSelector {
       }
     }
 
-    // Sort by final score descending
-    scoredTopics.sort((a, b) => b.finalScore - a.finalScore);
+    // Randomize category order per cycle, while preserving highest score inside each category.
+    const categoryBuckets = new Map();
+    for (const topic of scoredTopics) {
+      if (!categoryBuckets.has(topic.category)) categoryBuckets.set(topic.category, []);
+      categoryBuckets.get(topic.category).push(topic);
+    }
+
+    for (const topics of categoryBuckets.values()) {
+      topics.sort((a, b) => b.finalScore - a.finalScore);
+    }
+
+    const categoryOrder = this.shuffle([...categoryBuckets.keys()]);
+    const diverseTopics = [];
+    let depth = 0;
+    while (diverseTopics.length < scoredTopics.length) {
+      let addedAtDepth = false;
+      for (const category of categoryOrder) {
+        const topic = categoryBuckets.get(category)?.[depth];
+        if (topic) {
+          diverseTopics.push(topic);
+          addedAtDepth = true;
+        }
+      }
+      if (!addedAtDepth) break;
+      depth++;
+    }
+
+    db.log('info', 'TopicSelector', `Random category order for this cycle: ${categoryOrder.join(', ')}`);
 
     // Save top 10 into topics_queue if not already stored
-    for (const t of scoredTopics.slice(0, 10)) {
+    for (const t of diverseTopics.slice(0, 20)) {
       try {
         db.run(`
           INSERT INTO topics_queue (
@@ -99,8 +134,8 @@ class TopicSelector {
       }
     }
 
-    db.log('success', 'TopicSelector', `Scored and ranked ${scoredTopics.length} eligible topics. Top score: ${scoredTopics[0]?.finalScore || 0}`);
-    return scoredTopics;
+    db.log('success', 'TopicSelector', `Scored ${scoredTopics.length} eligible topics across ${categoryOrder.length} categories.`);
+    return diverseTopics;
   }
 }
 

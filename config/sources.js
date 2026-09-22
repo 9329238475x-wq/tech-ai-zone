@@ -37,6 +37,10 @@ module.exports = {
     { name: 'The Verge Tech', url: 'https://www.theverge.com/rss/index.xml', category: 'Tech News' },
     { name: 'TechRadar', url: 'https://www.techradar.com/rss', category: 'Next-Gen Hardware' },
     { name: 'Electrek', url: 'https://electrek.co/feed/', category: 'Next-Gen Hardware' },
+    { name: 'Engadget', url: 'https://www.engadget.com/rss.xml', category: 'Next-Gen Hardware' },
+    { name: 'Wired Science', url: 'https://www.wired.com/feed/category/science/latest/rss', category: 'Deep Tech' },
+    { name: 'Wired Business', url: 'https://www.wired.com/feed/category/business/latest/rss', category: 'Tech News' },
+    { name: 'The Guardian Technology', url: 'https://www.theguardian.com/uk/technology/rss', category: 'Tech News' },
     { name: 'Ars Technica', url: 'https://feeds.arstechnica.com/arstechnica/index', category: 'Deep Tech' },
     { name: 'MIT Tech Review', url: 'https://www.technologyreview.com/feed/', category: 'Breakthrough AI' }
   ],
