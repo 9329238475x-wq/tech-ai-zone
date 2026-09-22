@@ -7,12 +7,19 @@ const infographicEngine = require('../media/infographic');
 const translator = require('../translation/translator');
 const limits = require('../../config/limits');
 const db = require('../../database/db');
+const deduplicator = require('../trend/deduplicator');
 
 class Publisher {
   async processAndPublishTopic(topic) {
     db.log('info', 'Publisher', `Initiating quality-gated pipeline for topic: "${topic.title}"`);
 
     try {
+      const topicDuplicate = deduplicator.checkDuplicate(topic.title, { ignorePendingQueue: true });
+      if (topicDuplicate.isDuplicate) {
+        db.log('warn', 'Publisher', `Rejected duplicate topic before research: "${topic.title}"`);
+        return { success: false, duplicate: true, message: 'Duplicate topic rejected' };
+      }
+
       // 1. Deep Research Dossier
       const dossier = await deepResearcher.buildResearchDossier(topic);
       
@@ -24,6 +31,11 @@ class Publisher {
 
       // 3. AI Content Generation with Inline Citations, Visual Media & Dynamic Affiliate Matching
       const articleData = await articleWriter.generateArticle(dossier, secondaryImg, activeOffers);
+
+      if (deduplicator.isTitleAlreadyPublished(articleData.title)) {
+        db.log('warn', 'Publisher', `Rejected duplicate generated title: "${articleData.title}"`);
+        return { success: false, duplicate: true, message: 'Duplicate generated title rejected' };
+      }
 
       // 4. Fact Checking & Confidence Scoring
       const factCheck = factChecker.checkArticle(articleData, dossier);

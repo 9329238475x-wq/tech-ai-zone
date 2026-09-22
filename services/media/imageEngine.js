@@ -61,14 +61,29 @@ class ImageEngine {
   async resolveArticleImages(topic, candidateImageUrl = null) {
     const primary = await this.resolveImage(topic, candidateImageUrl);
 
+    if (!primary) {
+      return { primary: null, secondary: null };
+    }
+
     const category = topic.category || 'Tech News';
     const categoryImages = this.techImages[category] || this.techImages['Tech News'];
+    const usedImageUrls = new Set(this.getUsedImageUrls());
+    usedImageUrls.add(primary.imageUrl);
+    const allLibraryImages = Object.values(this.techImages).flat();
     
     // Pick secondary different from primary
-    const secondaryPool = categoryImages.filter(img => img.url !== primary.imageUrl);
-    const selectedSecondary = secondaryPool.length > 0 
+    const categorySecondaryPool = categoryImages.filter(img => img.url !== primary.imageUrl && !usedImageUrls.has(img.url));
+    const secondaryPool = categorySecondaryPool.length > 0
+      ? categorySecondaryPool
+      : allLibraryImages.filter(img => img.url !== primary.imageUrl && !usedImageUrls.has(img.url));
+    const selectedSecondary = secondaryPool.length > 0
       ? secondaryPool[Math.floor(Math.random() * secondaryPool.length)]
-      : categoryImages[0];
+      : null;
+
+    if (!selectedSecondary) {
+      db.log('warn', 'ImageEngine', `No unused secondary image remains for: "${topic.title}"`);
+      return { primary: null, secondary: null };
+    }
 
     const secondary = {
       imageUrl: selectedSecondary.url,
@@ -92,7 +107,7 @@ class ImageEngine {
         && !rawImage.includes('redditmedia.com/award');
 
       if (isValidFormat) {
-        const isLive = await this.verifyUrl(rawImage);
+        const isLive = !this.isImageUsed(rawImage) && await this.verifyUrl(rawImage);
         if (isLive) {
           db.log('info', 'ImageEngine', `Using verified source image: ${rawImage.slice(0, 80)}...`);
           return {
@@ -110,8 +125,18 @@ class ImageEngine {
     const category = topic.category || 'Tech News';
     const categoryImages = this.techImages[category] || this.techImages['Tech News'];
     
-    const available = categoryImages.filter(img => !this.recentlyUsed.includes(img.url));
-    const pool = available.length > 0 ? available : categoryImages;
+    const usedImageUrls = new Set(this.getUsedImageUrls());
+    const allLibraryImages = Object.values(this.techImages).flat();
+    const categoryAvailable = categoryImages.filter(img => !usedImageUrls.has(img.url) && !this.recentlyUsed.includes(img.url));
+    const available = categoryAvailable.length > 0
+      ? categoryAvailable
+      : allLibraryImages.filter(img => !usedImageUrls.has(img.url) && !this.recentlyUsed.includes(img.url));
+    const pool = available;
+
+    if (pool.length === 0) {
+      db.log('warn', 'ImageEngine', `No globally unused image remains for category: ${category}`);
+      return null;
+    }
     
     const selected = pool[Math.floor(Math.random() * pool.length)];
     
@@ -145,6 +170,17 @@ class ImageEngine {
     } catch (err) {
       console.error('Failed to record image:', err.message);
     }
+  }
+
+  getUsedImageUrls() {
+    const recordedImages = db.all('SELECT DISTINCT image_url AS url FROM images WHERE image_url IS NOT NULL');
+    const featuredImages = db.all('SELECT DISTINCT featured_image AS url FROM posts WHERE featured_image IS NOT NULL');
+    return [...new Set([...recordedImages, ...featuredImages].map(row => row.url).filter(Boolean))];
+  }
+
+  isImageUsed(imageUrl) {
+    if (!imageUrl) return false;
+    return !!db.get('SELECT id FROM images WHERE image_url = ? LIMIT 1', [imageUrl]);
   }
 }
 

@@ -2,6 +2,7 @@ const cron = require('node-cron');
 const topicSelector = require('../trend/selector');
 const publisher = require('../publishing/publisher');
 const db = require('../../database/db');
+const deduplicator = require('../trend/deduplicator');
 
 class Scheduler {
   constructor() {
@@ -71,6 +72,11 @@ class Scheduler {
 
       while (publishedResults.length < 2 && candidateIndex < rankedTopics.length) {
         const candidate = rankedTopics[candidateIndex++];
+        const duplicate = deduplicator.checkDuplicate(candidate.title, { ignorePendingQueue: true });
+        if (duplicate.isDuplicate) {
+          console.log(`[Scheduler] Skipping duplicate candidate: "${candidate.title}"`);
+          continue;
+        }
         console.log(`[Scheduler] Attempting candidate: "${candidate.title}" (Score: ${candidate.finalScore})`);
         const result = await publisher.processAndPublishTopic(candidate);
 

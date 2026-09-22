@@ -6,6 +6,11 @@ module.exports = {
     { name: 'artificial', weight: 1.2, category: 'Artificial Intelligence' },
     { name: 'singularity', weight: 1.3, category: 'Breakthrough AI' },
     { name: 'gadgets', weight: 0.9, category: 'Next-Gen Hardware' },
+    { name: 'hardware', weight: 1.0, category: 'Next-Gen Hardware' },
+    { name: 'iphone', weight: 0.9, category: 'Next-Gen Hardware' },
+    { name: 'android', weight: 0.9, category: 'Next-Gen Hardware' },
+    { name: 'electricvehicles', weight: 1.0, category: 'Next-Gen Hardware' },
+    { name: 'Futurology', weight: 1.0, category: 'Breakthrough AI' },
     { name: 'openai', weight: 1.2, category: 'AI Tools' },
     { name: 'MachineLearning', weight: 1.1, category: 'Deep Tech' }
   ],
@@ -20,6 +25,9 @@ module.exports = {
   // Google Trends RSS Feeds (Real-time searches)
   googleTrends: [
     { url: 'https://trends.google.com/trends/trending/rss?geo=US', region: 'US' },
+    { url: 'https://trends.google.com/trends/trending/rss?geo=GB', region: 'UK' },
+    { url: 'https://trends.google.com/trends/trending/rss?geo=CA', region: 'CA' },
+    { url: 'https://trends.google.com/trends/trending/rss?geo=AU', region: 'AU' },
     { url: 'https://trends.google.com/trends/trending/rss?geo=IN', region: 'IN' }
   ],
 
@@ -27,6 +35,8 @@ module.exports = {
   rssFeeds: [
     { name: 'TechCrunch AI', url: 'https://techcrunch.com/category/artificial-intelligence/feed/', category: 'AI Tools' },
     { name: 'The Verge Tech', url: 'https://www.theverge.com/rss/index.xml', category: 'Tech News' },
+    { name: 'TechRadar', url: 'https://www.techradar.com/rss', category: 'Next-Gen Hardware' },
+    { name: 'Electrek', url: 'https://electrek.co/feed/', category: 'Next-Gen Hardware' },
     { name: 'Ars Technica', url: 'https://feeds.arstechnica.com/arstechnica/index', category: 'Deep Tech' },
     { name: 'MIT Tech Review', url: 'https://www.technologyreview.com/feed/', category: 'Breakthrough AI' }
   ],

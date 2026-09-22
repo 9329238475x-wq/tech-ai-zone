@@ -9,6 +9,23 @@ const limits = require('../../config/limits');
 const db = require('../../database/db');
 
 class TopicSelector {
+  canonicalCategory(category, title = '') {
+    const value = `${category || ''} ${title || ''}`.toLowerCase();
+    if (/gadget|phone|iphone|android|laptop|wearable|car|vehicle|robot|chip|gpu|hardware|device/.test(value)) {
+      return 'Next-Gen Hardware';
+    }
+    if (/ai|llm|gpt|claude|model|copilot|agent|machine learning|neural/.test(value)) {
+      return 'AI Tools';
+    }
+    if (/quantum|space|biotech|cyber|open source|science|research/.test(value)) {
+      return 'Deep Tech';
+    }
+    if (category === 'Breakthrough AI' || category === 'Artificial Intelligence') {
+      return 'Breakthrough AI';
+    }
+    return 'Tech News';
+  }
+
   async discoverAndRankTopics() {
     db.log('info', 'TopicSelector', 'Starting multi-source trend scouting across Reddit, HN, Trends, RSS, and GitHub.');
     
@@ -32,8 +49,15 @@ class TopicSelector {
     db.log('info', 'TopicSelector', `Total raw topics collected: ${allDiscovered.length}`);
 
     const scoredTopics = [];
+    const seenTitles = new Set();
 
     for (const item of allDiscovered) {
+      item.category = this.canonicalCategory(item.category, item.title);
+      const titleKey = deduplicator.normalizeTitle(item.title);
+      if (!titleKey || seenTitles.has(titleKey)) continue;
+      seenTitles.add(titleKey);
+      if (scoredTopics.some(topic => deduplicator.calculateSimilarity(item.title, topic.title) >= 70)) continue;
+
       // 1. Deduplication check
       const dupCheck = deduplicator.checkDuplicate(item.title);
       if (dupCheck.isDuplicate) {
