@@ -212,6 +212,96 @@
   justify-content: space-between;
 }
 
+.admin-card-subtitle {
+  margin-top: 6px;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.admin-card form[action="/admin/settings"] {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-card form[action="/admin/settings"] .form-group {
+  margin: 0 0 12px;
+}
+
+.admin-card form[action="/admin/settings"] label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+  color: #e2e8f0;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.admin-card form[action="/admin/settings"] .form-input {
+  width: 100%;
+  min-height: 42px;
+}
+
+.admin-card form[action="/admin/settings"] textarea.form-input {
+  min-height: 92px;
+  line-height: 1.5;
+}
+
+.field-help {
+  display: block;
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.field-optional {
+  color: #64748b;
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.config-section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 6px 0 14px;
+  padding: 14px 16px;
+  background: #0b1120;
+  border: 1px solid rgba(99, 102, 241, 0.28);
+  border-left: 3px solid #6366f1;
+  border-radius: 9px;
+}
+
+.config-section-heading-automation {
+  margin-top: 18px;
+  border-left-color: #10b981;
+}
+
+.config-section-icon {
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+
+.config-section-heading strong {
+  display: block;
+  color: #f8fafc;
+  font-size: 0.9rem;
+}
+
+.config-section-heading small {
+  display: block;
+  margin-top: 3px;
+  color: #94a3b8;
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
 /* Live System Logs */
 .live-log-box {
   background: #080c14;

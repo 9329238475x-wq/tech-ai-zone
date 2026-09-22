@@ -336,20 +336,32 @@
         <!-- AdSense & Site Settings -->
         <div class="admin-card">
           <div class="admin-card-title">
-            <span>⚙️ Monetization & Automation Config</span>
+            <div>
+              <span>⚙️ कमाई और ऑटो-पब्लिश सेटिंग्स</span>
+              <p class="admin-card-subtitle">यहाँ से विज्ञापन और अपने-आप ब्लॉग पोस्ट बनने का समय नियंत्रित करें।</p>
+            </div>
           </div>
           <form action="/admin/settings" method="POST">
+            <div class="config-section-heading">
+              <span class="config-section-icon">💰</span>
+              <div>
+                <strong>विज्ञापन सेटिंग्स</strong>
+                <small>AdSense ID और विज्ञापन नेटवर्क की स्थिति यहाँ बदलें।</small>
+              </div>
+            </div>
             <div class="form-group">
-              <label for="adsense_client_id">Google AdSense Publisher ID</label>
+              <label for="adsense_client_id">Google AdSense Publisher ID <span class="field-optional">वैकल्पिक</span></label>
               <input type="text" id="adsense_client_id" name="adsense_client_id" class="form-input" placeholder="ca-pub-XXXXXXXXXXXXXXXX" value="<%= settings.adsense_client_id || '' %>">
+              <small class="field-help">अगर AdSense इस्तेमाल करते हैं तभी यहाँ Publisher ID डालें।</small>
             </div>
 
             <div class="form-group">
-              <label for="ads_enabled">Ad Units Status</label>
+              <label for="ads_enabled">विज्ञापन चालू/बंद करें</label>
               <select id="ads_enabled" name="ads_enabled" class="form-input">
-                <option value="false" <%= settings.ads_enabled === 'false' ? 'selected' : '' %>>Disabled (Live High-Yield Sponsored Ad Units Active)</option>
-                <option value="true" <%= settings.ads_enabled === 'true' ? 'selected' : '' %>>Enabled (Live Google AdSense Units)</option>
+                <option value="false" <%= settings.ads_enabled === 'false' ? 'selected' : '' %>>बंद (कोई ad slot नहीं)</option>
+                <option value="true" <%= settings.ads_enabled === 'true' ? 'selected' : '' %>>चालू (Adsterra / AdSense slots सक्रिय)</option>
               </select>
+              <small class="field-help">चालू रहने पर वेबसाइट के banner, native और global ads दिखेंगे।</small>
             </div>
 
             <div class="form-group" style="background: rgba(15, 23, 42, 0.55); border: 1.5px solid #6366f1; padding: 16px; border-radius: 8px;">
@@ -398,12 +410,21 @@
               </div>
             </details>
 
+            <div class="config-section-heading config-section-heading-automation">
+              <span class="config-section-icon">🤖</span>
+              <div>
+                <strong>ऑटो-पब्लिश सेटिंग्स</strong>
+                <small>सिस्टम trending topics खोजकर अपने-आप articles बनाएगा।</small>
+              </div>
+            </div>
+
             <div class="form-group">
-              <label for="auto_publish_enabled">🤖 Autonomous Auto-Publish Status</label>
+              <label for="auto_publish_enabled">ऑटो-पब्लिश चालू/बंद करें</label>
               <select id="auto_publish_enabled" name="auto_publish_enabled" class="form-input">
-                <option value="true" <%= settings.auto_publish_enabled === 'true' ? 'selected' : '' %>>✅ Active (Automated Discovery & Publishing ON)</option>
-                <option value="false" <%= settings.auto_publish_enabled === 'false' ? 'selected' : '' %>>⏸️ Paused (Only Manual Publishing)</option>
+                <option value="true" <%= settings.auto_publish_enabled === 'true' ? 'selected' : '' %>>✅ चालू (अपने-आप articles publish होंगे)</option>
+                <option value="false" <%= settings.auto_publish_enabled === 'false' ? 'selected' : '' %>>⏸️ बंद (सिर्फ manual publishing)</option>
               </select>
+              <small class="field-help">बंद करने पर scheduler कोई नया article अपने-आप publish नहीं करेगा।</small>
             </div>
 
             <div class="form-group" style="background: rgba(15, 23, 42, 0.45); border: 1px solid rgba(148, 163, 184, 0.15); padding: 14px; border-radius: 8px;">
@@ -413,7 +434,7 @@
               </label>
               
               <select id="cron_preset_select" class="form-input" style="margin-top: 6px;">
-                <option value="0 * * * *">⚡ हर 1 घंटे में (Every 1 Hour — 24 Posts / Day)</option>
+                <option value="0 * * * *">⚡ हर 1 घंटे में (2 posts — लगभग 48/day)</option>
                 <option value="0 */2 * * *">🚀 हर 2 घंटे में (Every 2 Hours — 12 Posts / Day)</option>
                 <option value="0 */3 * * *">🌟 हर 3 घंटे में (Every 3 Hours — 8 Posts / Day)</option>
                 <option value="0 */4 * * *">🕒 हर 4 घंटे में (Every 4 Hours — 6 Posts / Day)</option>
