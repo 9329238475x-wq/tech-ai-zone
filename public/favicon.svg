@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Tech AI Zone</title>
+  <rect width="64" height="64" rx="15" fill="#101827"/>
+  <path d="M21 17v7M32 13v7M43 17v7M21 47v-7M32 51v-7M43 47v-7M17 21h7M13 32h7M17 43h7M47 21h-7M51 32h-7M47 43h-7" stroke="#34d399" stroke-width="3" stroke-linecap="round"/>
+  <path d="m32 18 14 8v12l-14 8-14-8V26l14-8Z" fill="#e11d48" stroke="#f7f3ea" stroke-width="2.5" stroke-linejoin="round"/>
+  <text x="32" y="37" text-anchor="middle" fill="#fffaf0" font-family="Arial, sans-serif" font-size="12" font-weight="800" letter-spacing="-1">AI</text>
+  <circle cx="21" cy="17" r="2.5" fill="#fbbf24"/>
+  <circle cx="43" cy="47" r="2.5" fill="#fbbf24"/>
+</svg>
