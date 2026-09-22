@@ -44,6 +44,7 @@ class ImageEngine {
 
     this.defaultImage = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80';
     this.recentlyUsed = [];
+    this.generatedImageCounter = 0;
   }
 
   // Live URL validation to guarantee no 404 image is EVER assigned
@@ -80,16 +81,13 @@ class ImageEngine {
       ? secondaryPool[Math.floor(Math.random() * secondaryPool.length)]
       : null;
 
-    if (!selectedSecondary) {
-      db.log('warn', 'ImageEngine', `No unused secondary image remains for: "${topic.title}"`);
-      return { primary: null, secondary: null };
-    }
+    const secondaryImage = selectedSecondary || this.createGeneratedImage(topic, 'technical-visual');
 
     const secondary = {
-      imageUrl: selectedSecondary.url,
+      imageUrl: secondaryImage.url || secondaryImage.imageUrl,
       caption: `Technical Architecture & Ecosystem Integration — ${topic.title}`,
-      credit: 'Tech AI Zone Visual Lab / Unsplash',
-      licenseType: 'Unsplash Free License'
+      credit: secondaryImage.credit || 'Tech AI Zone Visual Lab / AI-generated visual',
+      licenseType: secondaryImage.licenseType || 'AI-generated editorial visual'
     };
 
     return { primary, secondary };
@@ -134,8 +132,9 @@ class ImageEngine {
     const pool = available;
 
     if (pool.length === 0) {
-      db.log('warn', 'ImageEngine', `No globally unused image remains for category: ${category}`);
-      return null;
+      const generated = this.createGeneratedImage(topic, 'hero');
+      db.log('info', 'ImageEngine', `Using unique generated fallback image for: "${topic.title}"`);
+      return generated;
     }
     
     const selected = pool[Math.floor(Math.random() * pool.length)];
@@ -181,6 +180,21 @@ class ImageEngine {
   isImageUsed(imageUrl) {
     if (!imageUrl) return false;
     return !!db.get('SELECT id FROM images WHERE image_url = ? LIMIT 1', [imageUrl]);
+  }
+
+  createGeneratedImage(topic, variant) {
+    this.generatedImageCounter += 1;
+    const prompt = `${topic.title}, ${topic.category || 'technology'}, editorial technology journalism visual, no logos, no text`;
+    const seed = `${Date.now()}${this.generatedImageCounter}`;
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1200&height=675&nologo=true&seed=${seed}`;
+    return {
+      imageUrl,
+      url: imageUrl,
+      sourceUrl: '',
+      caption: `${variant === 'hero' ? 'Editorial illustration' : 'Technical visual'} — ${topic.title}`,
+      credit: 'Tech AI Zone Visual Lab / AI-generated visual',
+      licenseType: 'AI-generated editorial visual'
+    };
   }
 }
 
