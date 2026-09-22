@@ -411,6 +411,34 @@ img {
   text-decoration: none;
 }
 
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark {
+  width: clamp(48px, 5vw, 72px);
+  height: clamp(48px, 5vw, 72px);
+  flex: 0 0 auto;
+  filter: drop-shadow(0 3px 3px rgba(17, 24, 39, 0.15));
+}
+
+.brand-wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.brand-wordmark small {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 2.4px;
+  color: var(--accent-primary);
+  font-weight: 700;
+  margin-top: 4px;
+}
+
 .newspaper-title {
   font-family: var(--font-masthead);
   font-size: clamp(2.2rem, 4.2vw, 3.8rem);
@@ -422,6 +450,18 @@ img {
   text-shadow: var(--text-shadow-heading);
   margin: 0;
   padding-bottom: 4px;
+}
+
+.footer-brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-brand-mark {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
 }
 
 .newspaper-tagline {
