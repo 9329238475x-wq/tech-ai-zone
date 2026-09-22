@@ -1,0 +1,58 @@
+  <!-- Broadsheet Newspaper Editorial Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="brand-logo" style="margin-bottom: 6px; display: inline-block;">
+            <span class="brand-name">The Tech AI Chronicle</span>
+          </a>
+          <p>
+            Independent investigative journalism, machine learning research, and deep-dive silicon analysis. Published daily for engineers, founders, and researchers worldwide.
+          </p>
+          <div class="footer-contact-box" style="margin-top: 14px;">
+            <a href="mailto:9329238475x@gmail.com" class="footer-email-btn" title="Direct Editorial Email: 9329238475x@gmail.com" style="display: inline-flex; align-items: center; gap: 8px; background: #ffffff; border: 1.5px solid #1c1917; color: #111827; padding: 8px 16px; border-radius: 4px; font-size: 0.85rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 5px rgba(0,0,0,0.08); transition: all 0.2s ease;">
+              <span style="font-size: 1.05rem;">✉️</span>
+              <span style="color: #111827;">9329238475x@gmail.com</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Editorial Desks</h4>
+          <ul class="footer-links">
+            <li><a href="/category/ai-tools">AI Tools & LLMs</a></li>
+            <li><a href="/category/breakthrough-ai">Breakthrough AI Research</a></li>
+            <li><a href="/category/tech-news">Breaking Tech Dispatches</a></li>
+            <li><a href="/category/next-gen-hardware">Semiconductors & Chips</a></li>
+            <li><a href="/category/deep-tech">Open Source & Deep Tech</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Publishing Desk</h4>
+          <ul class="footer-links">
+            <li><a href="/about">About The Chronicle</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Publication</a></li>
+            <li><a href="/disclaimer">Editorial Disclaimer</a></li>
+            <li><a href="/contact">Editorial Inquiries</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; <%= new Date().getFullYear() %> The Tech AI Chronicle. All rights reserved. Registered Broadsheet Publication.</p>
+        <p class="footer-powered">Powered by Builder 07</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js?v=2.5"></script>
+
+  <% if (typeof ads !== 'undefined' && ads.getHeadScript()) { %>
+    <!-- Non-Blocking Global Ad Network Scripts (Adsterra Social Bar & Popunder) -->
+    <div id="async-ad-network-root" style="display:none;"></div>
+    <%- ads.getHeadScript() %>
+  <% } %>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrendPulse AI | Admin Command Center</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- Admin Header -->
+  <header class="admin-header">
+    <div class="container admin-header-inner">
+      <div class="admin-title-row">
+        <h2 style="font-size: 1.3rem; font-weight: 800;">TrendPulse AI Command Center</h2>
+        <span class="admin-badge">v1.0 Autonomous</span>
+      </div>
+
+      <div class="status-pill-bar">
+        <div class="status-pill"><span class="dot-green"></span> Reddit</div>
+        <div class="status-pill"><span class="dot-green"></span> HN</div>
+        <div class="status-pill"><span class="dot-green"></span> Google Trends</div>
+        <div class="status-pill"><span class="dot-green"></span> Groq Pool (<%= groqPool.totalKeys %> Keys)</div>
+        <div class="status-pill"><span class="<%= settings.auto_publish_enabled === 'true' ? 'dot-green' : 'dot-red' %>"></span> <%= settings.auto_publish_enabled === 'true' ? 'Cron Active' : 'Cron Paused' %></div>
+        <a href="/" class="btn-icon" style="width: auto; padding: 4px 12px; font-size: 0.8rem;" target="_blank">View Site ↗</a>
+        <a href="/admin/logout" class="btn-icon" style="width: auto; padding: 4px 12px; font-size: 0.8rem; color: #f87171; border-color: rgba(248, 113, 113, 0.3);">Logout 🔒</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container" style="padding-top: 30px; padding-bottom: 60px;">
+
+    <!-- Metrics Row -->
+    <div class="metrics-row">
+      <div class="metric-card">
+        <span class="metric-label">Published Articles</span>
+        <span class="metric-val"><%= stats.totalPosts %></span>
+        <span class="metric-sub">+<%= stats.todayPosts %> Published Today</span>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">Total Verified Views</span>
+        <span class="metric-val"><%= stats.totalViews %></span>
+        <span class="metric-sub">Live Organic Tracking</span>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">Groq Key Rotation Pool</span>
+        <span class="metric-val"><%= groqPool.availableKeys %> / <%= groqPool.totalKeys %></span>
+        <span class="metric-sub"><%= groqPool.poolHealth %></span>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">Scouted Topic Queue</span>
+        <span class="metric-val"><%= stats.pendingTopics %></span>
+        <span class="metric-sub">Quality Threshold > 65</span>
+      </div>
+    </div>
+
+    <!-- 1-Click Action Center -->
+    <div class="action-box">
+      <div class="action-info">
+        <h3>⚡ Autonomous Publishing Pipeline</h3>
+        <p>Run instant multi-source scouting across Reddit, HackerNews & Google Trends, execute deep research, fact-check claims, and publish immediately.</p>
+        <div style="margin-top: 12px; display: flex; gap: 10px; max-width: 500px;">
+          <input type="text" id="custom-topic-input" class="form-input" placeholder="Optional: Enter custom topic (or leave blank for auto-scout)">
+        </div>
+      </div>
+      <div>
+        <button id="btn-generate-now" class="btn-generate-now">
+          <span>⚡ Run AI Pipeline & Post Now</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Execution Logs -->
+    <div class="admin-card" style="margin-bottom: 30px;">
+      <div class="admin-card-title">
+        <span>📟 Live System & Pipeline Logs</span>
+        <small style="color: #94a3b8;">Real-Time Execution</small>
+      </div>
+      <div id="live-log-box" class="live-log-box">
+        <% if (logs && logs.length > 0) { %>
+          <% logs.slice(0, 15).forEach(l => { %>
+            <div>[<%= new Date(l.timestamp).toLocaleTimeString() %>] [<%= l.module %>] <%= l.message %></div>
+          <% }); %>
+        <% } else { %>
+          <div>System online. Ready for autonomous cycle.</div>
+        <% } %>
+      </div>
+    <!-- Professional Multi-Link Directory Manager (10, 20, 50+ Links) -->
+    <div class="admin-card directory-admin-card" id="affiliate-manager" style="margin-bottom: 30px;">
+      <div class="admin-card-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 1.15rem; font-weight: 700; color: #f8fafc;">💼 Curated Affiliate & Resource Directory</span>
+          <span class="admin-badge" style="background: rgba(148, 163, 184, 0.12); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.2);">Multi-Link Engine</span>
+        </div>
+        <div style="font-size: 0.82rem; color: #94a3b8; display: flex; align-items: center; gap: 8px;">
+          <span class="status-count-tag" id="affiliate-total-count"><%= affiliateLinks ? affiliateLinks.length : 0 %> Links in Directory</span>
+          <span style="color: #334155;">•</span>
+          <span style="color: #10b981;">● Active Rotation</span>
+        </div>
+      </div>
+      <p style="font-size: 0.86rem; color: #94a3b8; margin-bottom: 22px; line-height: 1.5;">
+        यहाँ आप जितने चाहें (<strong>10, 20, 50 या अधिक</strong>) Adsterra Smartlinks, Amazon या डायरेक्ट अफ़िलिएट लिंक्स जोड़ सकते हैं। यह हर ब्लॉग पोस्ट के नीचे एक परिपक्व (Mature) और साफ-सुथरी <em>"Curated Developer Tools & Verified Resources"</em> डायरेक्टरी के रूप में दिखते हैं।
+      </p>
+
+      <!-- 1-Click AI Auto-Analyze Link Adder -->
+      <div class="directory-add-box">
+        <h4 style="font-size: 0.95rem; font-weight: 700; color: #f1f5f9; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+          <span>⚡ Instant 1-Click AI Link Saver (सिर्फ लिंक डालें — AI सब कुछ खुद बनाएगा)</span>
+        </h4>
+
+        <form id="form-quick-add-link" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: stretch;">
+          <div style="flex-grow: 1; min-width: 320px; position: relative;">
+            <input type="url" id="quick_affiliate_url" class="form-input" 
+              placeholder="यहाँ अपना कोई भी Affiliate Link या Smartlink पेस्ट करें (उदा. https://...)" 
+              style="padding: 12px 14px 12px 42px; font-size: 0.92rem; height: 100%; border-radius: 8px;" required>
+            <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 1.1rem; color: #64748b;">🔗</span>
+          </div>
+
+          <button type="submit" id="btn-quick-add" class="btn-clean-primary" style="padding: 12px 28px; font-size: 0.95rem; font-weight: 700; border-radius: 8px; white-space: nowrap;">
+            <span>⚡ AI Analyze & Save Link</span>
+          </button>
+        </form>
+
+        <div style="font-size: 0.82rem; color: #94a3b8; margin-top: 12px; line-height: 1.5; display: flex; align-items: center; gap: 6px;">
+          <span style="color: #10b981;">✓</span>
+          <span><strong>कोई फॉर्म भरने की ज़रूरत नहीं:</strong> आप बस लिंक पेस्ट करके बटन दबाएँ। AI अपने आप पहचान लेगा कि यह किस चीज़ का लिंक है, उसका नाम, कैटेगरी और प्रोफेशनल विवरण बनाकर तुरंत डायरेक्टरी में जोड़ देगा!</span>
+        </div>
+      </div>
+
+      <!-- Links Table (Shows all 10, 20, 50+ Links) -->
+      <div style="margin-top: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h4 style="font-size: 0.92rem; font-weight: 700; color: #e2e8f0;">
+            Configured Directory Links (<span id="table-links-count"><%= affiliateLinks ? affiliateLinks.length : 0 %></span>)
+          </h4>
+          <span style="font-size: 0.78rem; color: #64748b;">All active links rotate automatically on blog posts</span>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table directory-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">ID</th>
+                <th style="width: 180px;">Tool / Resource</th>
+                <th>Headline & Description</th>
+                <th style="width: 180px;">Destination Link</th>
+                <th style="width: 90px;">Status</th>
+                <th style="width: 80px; text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="directory-links-tbody">
+              <% if (affiliateLinks && affiliateLinks.length > 0) { %>
+                <% affiliateLinks.forEach(link => { %>
+                  <tr id="affiliate-row-<%= link.id %>">
+                    <td>#<%= link.id %></td>
+                    <td>
+                      <div style="font-weight: 700; color: #f1f5f9;"><%= link.tool_name %></div>
+                      <span class="clean-category-badge"><%= link.category || 'Tools' %></span>
+                    </td>
+                    <td>
+                      <div style="font-weight: 600; color: #cbd5e1; font-size: 0.85rem;"><%= link.headline %></div>
+                      <div style="color: #94a3b8; font-size: 0.8rem; margin-top: 2px; line-height: 1.35;"><%= link.description %></div>
+                    </td>
+                    <td>
+                      <a href="<%= link.affiliate_url %>" target="_blank" rel="noopener nofollow" class="table-link-preview" title="<%= link.affiliate_url %>">
+                        <%= link.affiliate_url.length > 25 ? link.affiliate_url.substring(0, 25) + '...' : link.affiliate_url %> ↗
+                      </a>
+                    </td>
+                    <td>
+                      <button class="btn-toggle-affiliate" data-id="<%= link.id %>" style="background: <%= link.is_active ? 'rgba(16, 185, 129, 0.15)' : 'rgba(148, 163, 184, 0.15)' %>; color: <%= link.is_active ? '#10b981' : '#94a3b8' %>; border: 1px solid <%= link.is_active ? 'rgba(16, 185, 129, 0.3)' : 'rgba(148, 163, 184, 0.2)' %>; padding: 3px 8px; border-radius: 4px; font-size: 0.74rem; cursor: pointer;">
+                        <%= link.is_active ? 'Active' : 'Paused' %>
+                      </button>
+                    </td>
+                    <td style="text-align: right;">
+                      <button class="btn-delete btn-delete-affiliate" data-id="<%= link.id %>" title="Delete Link">🗑️</button>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr id="no-links-row">
+                  <td colspan="6" style="text-align: center; color: #64748b; padding: 24px;">
+                    No affiliate links configured yet. Add your first link using the form above.
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-grid-layout">
+      <!-- Left Column: Top Trending Queue & Published Articles -->
+      <div>
+        <!-- Top Trending Topics Queue -->
+        <div class="admin-card" style="margin-bottom: 24px;">
+          <div class="admin-card-title">
+            <span>🔥 Scouted Trending Topics (6-Metric Scoring)</span>
+            <span style="font-size: 0.8rem; color: #818cf8;"><%= trendingTopics.length %> Qualified</span>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Topic Title</th>
+                  <th>Source</th>
+                  <th>Trend</th>
+                  <th>Fresh</th>
+                  <th>Search</th>
+                  <th>Total Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (trendingTopics && trendingTopics.length > 0) { %>
+                  <% trendingTopics.forEach(t => { %>
+                    <tr>
+                      <td style="font-weight: 600; color: #f8fafc; max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <%= t.title %>
+                      </td>
+                      <td style="color: #cbd5e1;"><span style="text-transform: uppercase; font-size: 0.75rem;"><%= t.source_type %></span></td>
+                      <td style="color: #cbd5e1;"><%= t.trend_score %></td>
+                      <td style="color: #cbd5e1;"><%= t.freshness_score %></td>
+                      <td style="color: #cbd5e1;"><%= t.search_potential %></td>
+                      <td><span class="score-tag"><%= t.final_score %></span></td>
+                    </tr>
+                  <% }); %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="6" style="text-align: center; color: #94a3b8;">No pending topics in queue. Click "Run AI Pipeline" to trigger discovery.</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Published Articles Manager -->
+        <div class="admin-card">
+          <div class="admin-card-title">
+            <span style="color: #f8fafc;">📰 Published Articles Management</span>
+            <span style="font-size: 0.8rem; color: #10b981;"><%= posts.length %> Live</span>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th style="color: #94a3b8;">ID</th>
+                  <th style="color: #94a3b8;">Title</th>
+                  <th style="color: #94a3b8;">Category</th>
+                  <th style="color: #94a3b8;">Views</th>
+                  <th style="color: #94a3b8;">Reader Rating</th>
+                  <th style="color: #94a3b8;">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (posts && posts.length > 0) { %>
+                  <% posts.forEach(p => { %>
+                    <tr id="post-row-<%= p.id %>">
+                      <td style="color: #94a3b8;">#<%= p.id %></td>
+                      <td style="font-weight: 600; max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <a href="/post/<%= p.slug %>" target="_blank" style="color: #f8fafc; font-weight: 600; text-decoration: none;" class="admin-table-link">
+                          <%= p.title %>
+                        </a>
+                      </td>
+                      <td style="color: #cbd5e1;"><%= p.category %></td>
+                      <td style="color: #cbd5e1;"><%= p.view_count || 0 %></td>
+                      <td style="white-space: nowrap;">
+                        <span style="color: #10b981; font-weight: 700; font-size: 0.8rem;">👍 <%= p.likes || 0 %></span>
+                        <span style="color: #f87171; font-weight: 700; font-size: 0.8rem; margin-left: 8px;">👎 <%= p.dislikes || 0 %></span>
+                      </td>
+                      <td>
+                        <a href="/post/<%= p.slug %>" target="_blank" class="btn-icon" style="height: 26px; width: 26px; font-size: 0.75rem; color: #f1f5f9; border-color: rgba(255,255,255,0.15);" title="View">👁️</a>
+                        <button class="btn-delete btn-delete-post" data-id="<%= p.id %>" title="Delete">🗑️</button>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="6" style="text-align: center; color: #94a3b8;">No articles published yet.</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Groq Key Pool & AdSense Settings -->
+      <div>
+        <!-- Groq API Key Rotation Pool Status -->
+        <div class="admin-card" style="margin-bottom: 24px;">
+          <div class="admin-card-title">
+            <span>🔑 Groq Multi-Key Pool</span>
+            <span style="font-size: 0.78rem; color: #10b981;"><%= groqPool.totalKeys %> Keys Loaded</span>
+          </div>
+          <p style="font-size: 0.82rem; color: #94a3b8; margin-bottom: 14px;">
+            Automatic rate-limit (429) failover active. Put multiple keys in <code>.env</code> separated by commas.
+          </p>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table" style="font-size: 0.8rem;">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Masked Key</th>
+                  <th>Status</th>
+                  <th>Calls</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (groqPool.keys && groqPool.keys.length > 0) { %>
+                  <% groqPool.keys.forEach(k => { %>
+                    <tr>
+                      <td><%= k.index %></td>
+                      <td><code><%= k.maskedKey %></code></td>
+                      <td><%= k.status %></td>
+                      <td><%= k.calls %></td>
+                    </tr>
+                  <% }); %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="4" style="text-align: center; color: #f59e0b;">
+                      ⚠️ No Groq API keys configured in .env yet.<br>Using high-fidelity simulation engine.
+                    </td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- AdSense & Site Settings -->
+        <div class="admin-card">
+          <div class="admin-card-title">
+            <span>⚙️ Monetization & Automation Config</span>
+          </div>
+          <form action="/admin/settings" method="POST">
+            <div class="form-group">
+              <label for="adsense_client_id">Google AdSense Publisher ID</label>
+              <input type="text" id="adsense_client_id" name="adsense_client_id" class="form-input" placeholder="ca-pub-XXXXXXXXXXXXXXXX" value="<%= settings.adsense_client_id || '' %>">
+            </div>
+
+            <div class="form-group">
+              <label for="ads_enabled">Ad Units Status</label>
+              <select id="ads_enabled" name="ads_enabled" class="form-input">
+                <option value="false" <%= settings.ads_enabled === 'false' ? 'selected' : '' %>>Disabled (Live High-Yield Sponsored Ad Units Active)</option>
+                <option value="true" <%= settings.ads_enabled === 'true' ? 'selected' : '' %>>Enabled (Live Google AdSense Units)</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="background: rgba(15, 23, 42, 0.55); border: 1.5px solid #6366f1; padding: 16px; border-radius: 8px;">
+              <label for="global_head_ad" style="font-weight: 700; color: #f8fafc; display: flex; align-items: center; justify-content: space-between;">
+                <span>🚀 Universal Head Ad Code (Adsterra Social Bar / Popunder)</span>
+                <span class="admin-badge" style="background: rgba(34, 197, 94, 0.2); color: #4ade80; font-size: 0.7rem;">⭐ 100% All-Pages Fill</span>
+              </label>
+              <textarea id="global_head_ad" name="global_head_ad" class="form-input" rows="3" 
+                placeholder="यहाँ अपना Adsterra Social Bar या Popunder कोड पेस्ट करें। यह वेबसाइट के 100% सभी पेजों (Home, Post, Category, Legal) पर तुरंत एक्टिव हो जाएगा..."
+                style="font-family: monospace; font-size: 0.82rem; margin-top: 6px;"><%= settings.global_head_ad || '' %></textarea>
+              <small style="color: #94a3b8; font-size: 0.74rem; display: block; margin-top: 5px; line-height: 1.4;">
+                💡 <strong>टिप:</strong> Adsterra में <em>+ Add Unit</em> पर क्लिक करके <strong>Social Bar (In-Page Push)</strong> चुनें। इसका कोड यहाँ पेस्ट करते ही हर पेज पर फ्लोटिंग रिच एड्स दिखने लगेंगी!
+              </small>
+            </div>
+
+            <div class="form-group" style="background: rgba(15, 23, 42, 0.45); border: 1px solid rgba(148, 163, 184, 0.15); padding: 14px; border-radius: 8px;">
+              <label for="global_custom_ad" style="font-weight: 700; color: #f8fafc; display: flex; align-items: center; justify-content: space-between;">
+                <span>📢 Primary Ad Banner (Adsterra Native Banner / Top Leaderboard)</span>
+                <span class="admin-badge" style="background: rgba(234, 179, 8, 0.15); color: #facc15; font-size: 0.7rem;">Leaderboard Slot</span>
+              </label>
+              <textarea id="global_custom_ad" name="global_custom_ad" class="form-input" rows="3" 
+                placeholder="यहाँ अपना Adsterra Native Banner कोड पेस्ट करें (जैसे invoke.js और container-xxx वाला कोड)..."
+                style="font-family: monospace; font-size: 0.82rem; margin-top: 6px;"><%= settings.global_custom_ad || '' %></textarea>
+              <small style="color: #94a3b8; font-size: 0.74rem; display: block; margin-top: 5px; line-height: 1.4;">
+                💡 <em>यह कोड मुख्य हेडर स्लॉट पर लाइव चलता है। बाकी साइडबार और फुटर स्लॉट्स में वेरीफाइड स्पॉन्सर एड्स अपने आप लाइव रहेंगे ताकि कोई भी जगह खाली न रहे।</em>
+              </small>
+            </div>
+
+            <details style="background: rgba(15, 23, 42, 0.35); border: 1px dashed rgba(148, 163, 184, 0.25); padding: 12px 14px; border-radius: 8px; margin-bottom: 16px;">
+              <summary style="font-size: 0.82rem; font-weight: 700; color: #38bdf8; cursor: pointer;">
+                ⚙️ Extra Slot-Specific Ad Codes (Sidebar, In-Content, Footer Banners)
+              </summary>
+              <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                  <label for="custom_ad_sidebar" style="font-size: 0.78rem; color: #cbd5e1; font-weight: 600;">Sidebar Ad Unit (Adsterra 300x250 Banner):</label>
+                  <textarea id="custom_ad_sidebar" name="custom_ad_sidebar" class="form-input" rows="2" style="font-family: monospace; font-size: 0.78rem; margin-top: 4px;" placeholder="Optional: Adsterra 300x250 banner code"><%= settings.custom_ad_sidebar || '' %></textarea>
+                </div>
+                <div>
+                  <label for="custom_ad_incontent" style="font-size: 0.78rem; color: #cbd5e1; font-weight: 600;">In-Content Article Ad Unit (Adsterra 728x90 Banner):</label>
+                  <textarea id="custom_ad_incontent" name="custom_ad_incontent" class="form-input" rows="2" style="font-family: monospace; font-size: 0.78rem; margin-top: 4px;" placeholder="Optional: Adsterra 728x90 banner code"><%= settings.custom_ad_incontent || '' %></textarea>
+                </div>
+                <div>
+                  <label for="custom_ad_footer" style="font-size: 0.78rem; color: #cbd5e1; font-weight: 600;">Footer Leaderboard Ad Unit (Adsterra 468x60 / 728x90):</label>
+                  <textarea id="custom_ad_footer" name="custom_ad_footer" class="form-input" rows="2" style="font-family: monospace; font-size: 0.78rem; margin-top: 4px;" placeholder="Optional: Footer banner code"><%= settings.custom_ad_footer || '' %></textarea>
+                </div>
+              </div>
+            </details>
+
+            <div class="form-group">
+              <label for="auto_publish_enabled">🤖 Autonomous Auto-Publish Status</label>
+              <select id="auto_publish_enabled" name="auto_publish_enabled" class="form-input">
+                <option value="true" <%= settings.auto_publish_enabled === 'true' ? 'selected' : '' %>>✅ Active (Automated Discovery & Publishing ON)</option>
+                <option value="false" <%= settings.auto_publish_enabled === 'false' ? 'selected' : '' %>>⏸️ Paused (Only Manual Publishing)</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="background: rgba(15, 23, 42, 0.45); border: 1px solid rgba(148, 163, 184, 0.15); padding: 14px; border-radius: 8px;">
+              <label for="cron_preset_select" style="font-weight: 700; color: #f8fafc; display: flex; align-items: center; justify-content: space-between;">
+                <span>⏱️ Publishing Timing (कब-कब पोस्ट होनी चाहिए)</span>
+                <span class="admin-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-size: 0.7rem;">Live Scheduler</span>
+              </label>
+              
+              <select id="cron_preset_select" class="form-input" style="margin-top: 6px;">
+                <option value="0 * * * *">⚡ हर 1 घंटे में (Every 1 Hour — 24 Posts / Day)</option>
+                <option value="0 */2 * * *">🚀 हर 2 घंटे में (Every 2 Hours — 12 Posts / Day)</option>
+                <option value="0 */3 * * *">🌟 हर 3 घंटे में (Every 3 Hours — 8 Posts / Day)</option>
+                <option value="0 */4 * * *">🕒 हर 4 घंटे में (Every 4 Hours — 6 Posts / Day)</option>
+                <option value="0 8,12,16,20 * * *">📅 दिन में 4 बार (08:00, 12:00, 16:00, 20:00 — Standard)</option>
+                <option value="0 9,21 * * *">🌅 दिन में 2 बार (सुबह 9:00 और रात 9:00 बजे)</option>
+                <option value="0 10 * * *">☀️ दिन में 1 बार (सुबह 10:00 बजे)</option>
+                <option value="custom">✏️ कस्टम समय (Custom Cron Pattern)</option>
+              </select>
+
+              <div style="margin-top: 10px;">
+                <label for="cron_schedule" style="font-size: 0.78rem; color: #94a3b8;">
+                  क्रॉन टाइमिंग पैटर्न (Cron Expression):
+                </label>
+                <input type="text" id="cron_schedule" name="cron_schedule" class="form-input" 
+                  value="<%= settings.cron_schedule || '0 8,12,16,20 * * *' %>" 
+                  placeholder="e.g. 0 8,12,16,20 * * *" 
+                  style="font-family: 'Consolas', 'Courier New', monospace; font-weight: 700; color: #38bdf8; letter-spacing: 0.5px;" required>
+                <div style="font-size: 0.74rem; color: #64748b; margin-top: 5px; line-height: 1.4;">
+                  💡 <em>आप ऊपर ड्रॉपडाउन से अपनी पसंद का समय चुन सकते हैं या सीधे अपना क्रॉन कोड लिख सकते हैं (जैसे: <code>0 */2 * * *</code>)।</em>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="groq_model">Groq Model</label>
+              <select id="groq_model" name="groq_model" class="form-input">
+                <option value="openai/gpt-oss-120b" <%= settings.groq_model === 'openai/gpt-oss-120b' ? 'selected' : '' %>>GPT-OSS 120B (Best Quality — Recommended)</option>
+                <option value="qwen/qwen3.8-27b" <%= settings.groq_model === 'qwen/qwen3.8-27b' ? 'selected' : '' %>>Qwen 3.8 27B (Fast & Capable)</option>
+                <option value="openai/gpt-oss-20b" <%= settings.groq_model === 'openai/gpt-oss-20b' ? 'selected' : '' %>>GPT-OSS 20B (Ultra Fast)</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn-submit" style="width: 100%;">Save Configuration</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

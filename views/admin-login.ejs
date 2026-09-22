@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Tech AI Zone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      background: radial-gradient(circle at 50% 30%, #151928 0%, #08090d 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: rgba(19, 22, 31, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 20px;
+      padding: 40px 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(99, 102, 241, 0.15);
+      backdrop-filter: blur(20px);
+      text-align: center;
+    }
+    .login-icon {
+      width: 60px;
+      height: 60px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      box-shadow: 0 0 24px rgba(99, 102, 241, 0.25);
+    }
+    .login-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #f0f2f5;
+      margin-bottom: 8px;
+    }
+    .login-sub {
+      color: #8892a4;
+      font-size: 0.86rem;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #a0aec0;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .form-input {
+      width: 100%;
+      background: #0d0f17;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 13px 16px;
+      color: #f0f2f5;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      box-sizing: border-box;
+      transition: all 0.2s;
+    }
+    .form-input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+      background: #111420;
+    }
+    .btn-login {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
+    }
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+    }
+    .login-error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      font-size: 0.85rem;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 24px;
+      color: #8892a4;
+      font-size: 0.82rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: #6366f1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <div class="login-icon">🔒</div>
+    <h1 class="login-title">Admin Access</h1>
+    <p class="login-sub">Enter security key to access TrendPulse AI Command Center</p>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="login-error"><%= error %></div>
+    <% } %>
+
+    <form action="/admin/login" method="POST">
+      <div class="form-group">
+        <label class="form-label" for="password">Admin Security Password</label>
+        <input type="password" id="password" name="password" class="form-input" placeholder="Enter password..." required autofocus>
+      </div>
+
+      <button type="submit" class="btn-login">Unlock Command Center →</button>
+    </form>
+
+    <a href="/" class="back-link">← Return to Public Website</a>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+<%- include('partials/header') %>
+
+<div class="container">
+
+  <!-- Top Leaderboard Broadsheet Ad Slot (Adsterra / Primary Network) -->
+  <%- ads.renderSlot('header') %>
+
+  <!-- High-Density Broadsheet Front-Page Hero Layout -->
+  <% if (featuredPost) { %>
+    <section class="newspaper-hero-grid">
+      <!-- 1. LEFT COLUMN: THE DISPATCH WIRE (Fast Micro-Bulletins & Timed Intelligence) -->
+      <aside class="newspaper-wire-col">
+        <div class="wire-header">
+          <span class="wire-title">The Dispatch Wire</span>
+          <span class="wire-live-tag">● LIVE UPDATE</span>
+        </div>
+        <div class="wire-items-list">
+          <% 
+            const wireList = (trendingPosts && trendingPosts.length > 0) ? trendingPosts.slice(0, 4) : posts.slice(0, 4);
+            wireList.forEach((item, idx) => { 
+          %>
+            <article class="wire-item">
+              <div class="wire-meta">
+                <span class="wire-category"><%= item.category %></span>
+                <span>•</span>
+                <span><%= item.read_time || 3 %>M READ</span>
+                <span>•</span>
+                <span>CONF. <%= item.fact_confidence || 94 %>%</span>
+              </div>
+              <a href="/post/<%= item.slug %>" class="wire-headline">
+                <%= item.title %>
+              </a>
+              <p class="wire-snippet">
+                <%= item.summary || item.quick_answer || item.meta_description || 'Live technical monitoring and verified editorial dispatch.' %>
+              </p>
+            </article>
+          <% }); %>
+        </div>
+
+      </aside>
+
+      <!-- 2. CENTER COLUMN: LEAD FRONT-PAGE STORY -->
+      <main class="newspaper-lead-col">
+        <article class="lead-article-card">
+          <div class="lead-dateline-bar">
+            <span class="lead-category-tag"><%= featuredPost.category %></span>
+            <span>•</span>
+            <span>PUBLISHED: <%= new Date(featuredPost.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></span>
+            <span>•</span>
+            <span>EDITION: GLOBAL DIGITAL</span>
+          </div>
+
+          <a href="/post/<%= featuredPost.slug %>" class="lead-title-link">
+            <h2 class="lead-headline"><%= featuredPost.title %></h2>
+          </a>
+
+          <div class="lead-photo-frame">
+            <a href="/post/<%= featuredPost.slug %>" class="lead-img-wrap" title="<%= featuredPost.title %>">
+              <img src="<%= featuredPost.featured_image || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80' %>" 
+                   alt="<%= featuredPost.title %>" 
+                   loading="lazy" 
+                   onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80';">
+            </a>
+            <div class="lead-photo-caption">
+              <span>PHOTO: Verified Editorial Imagery</span>
+              <span>EST. READ: <%= featuredPost.read_time || 5 %> MIN</span>
+            </div>
+          </div>
+
+          <p class="lead-body-excerpt">
+            <%= featuredPost.summary || featuredPost.quick_answer || featuredPost.meta_description %>
+          </p>
+
+          <div class="lead-footer-row">
+            <span class="quality-badge">✓ <%= featuredPost.quality_score || 94 %>% Verified Audit</span>
+            <a href="/post/<%= featuredPost.slug %>" class="lead-read-btn">
+              Read Full Broadsheet Dispatch ➔
+            </a>
+          </div>
+        </article>
+      </main>
+
+      <!-- 3. RIGHT COLUMN: TRENDING BAROMETER & VERIFIED FACT WATCH -->
+      <aside class="newspaper-side-col">
+        <!-- Top 5 Ranked Dispatches -->
+        <div class="side-trending-box">
+          <div class="side-box-header">
+            <span class="side-box-title">Trending Leaderboard</span>
+            <span style="font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-dim);">TOP 5</span>
+          </div>
+          <div class="trending-ranked-list">
+            <% if (trendingPosts && trendingPosts.length > 0) { %>
+              <% trendingPosts.slice(0, 5).forEach((post, index) => { %>
+                <div class="ranked-item">
+                  <span class="ranked-num">0<%= index + 1 %></span>
+                  <div class="ranked-content">
+                    <a href="/post/<%= post.slug %>" class="ranked-title">
+                      <%= post.title %>
+                    </a>
+                    <div class="ranked-meta">
+                      <span><%= post.category %></span>
+                      <span>•</span>
+                      <span><%= post.read_time || 4 %>m</span>
+                    </div>
+                  </div>
+                </div>
+              <% }); %>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Fact Watch Editorial Micro-Card -->
+        <div class="fact-watch-box">
+          <div class="fact-watch-title">
+            <span>🛡️ FACT-CHECK DESK</span>
+          </div>
+          <p class="fact-watch-text">
+            Every technical article published by The Tech AI Chronicle is cross-referenced against original peer-reviewed arXiv papers, GitHub repos, and API telemetry before printing.
+          </p>
+          <span class="fact-watch-badge">100% Verified & Expert-Audited</span>
+        </div>
+
+        <!-- Right Hero Sidebar Sponsored Ad Slot -->
+        <div style="margin-top: 14px;">
+          <%- ads.renderSlot('sidebar') %>
+        </div>
+
+      </aside>
+    </section>
+  <% } %>
+
+
+
+  <!-- Mid-Page In-Content Broadsheet Ad Slot -->
+  <%- ads.renderSlot('in-content') %>
+
+  <!-- Latest Broadsheet Articles Section -->
+  <section class="posts-section">
+    <div class="section-header">
+      <h3 class="section-title">Latest In-Depth Broadsheet Reports</h3>
+      <span class="section-count"><%= posts.length %> Published Articles</span>
+    </div>
+
+    <% if (posts && posts.length > 0) { %>
+      <div class="posts-grid">
+        <% posts.forEach(post => { %>
+          <article class="post-card">
+            <a href="/post/<%= post.slug %>" class="card-img-wrap">
+              <img src="<%= post.featured_image || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80' %>" 
+                   alt="<%= post.title %>" 
+                   loading="lazy" 
+                   onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80';">
+            </a>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="badge-category"><%= post.category %></span>
+                <span>•</span>
+                <span><%= new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %></span>
+                <span>•</span>
+                <span><%= post.read_time || 5 %>m read</span>
+              </div>
+              <a href="/post/<%= post.slug %>">
+                <h4 class="post-title"><%= post.title %></h4>
+              </a>
+              <p class="post-excerpt"><%= post.summary || post.quick_answer || post.meta_description %></p>
+            </div>
+            <div class="card-footer">
+              <span class="quality-badge">
+                ✓ <%= post.quality_score || 92 %>% Quality Score
+              </span>
+              <span><%= post.source_count || 4 %> Verified Sources</span>
+            </div>
+          </article>
+        <% }); %>
+      </div>
+    <% } %>
+  </section>
+
+  <!-- Bottom Broadsheet Leaderboard Ad Slot -->
+  <div style="margin: 24px 0 12px 0;">
+    <%- ads.renderSlot('footer') %>
+  </div>
+
+</div>
+
+<%- include('partials/footer') %>

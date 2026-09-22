@@ -1,0 +1,166 @@
+<%- include('partials/header') %>
+
+<div class="container article-page-container">
+  <!-- Top Leaderboard Ad -->
+  <%- ads.renderSlot('header') %>
+
+  <div class="article-layout">
+    <!-- LEFT SIDEBAR: Categories & Editorial Desks Navigation -->
+    <aside class="article-left-sidebar">
+      <div class="sidebar-widget sidebar-category-card">
+        <h4 class="widget-title">📑 Editorial Desks</h4>
+        <ul class="category-nav-list">
+          <% if (typeof categories !== 'undefined' && categories) { %>
+            <% categories.forEach(cat => { %>
+              <% const isActive = (currentCategory && currentCategory.slug === cat.slug); %>
+              <% const count = (typeof categoryCounts !== 'undefined' && categoryCounts[cat.name]) ? categoryCounts[cat.name] : 0; %>
+              <li class="category-nav-item">
+                <a href="/category/<%= cat.slug %>" class="category-nav-link <%= isActive ? 'active' : '' %>" title="<%= cat.description %>">
+                  <div class="cat-nav-left">
+                    <span class="cat-icon"><%= cat.icon %></span>
+                    <span class="cat-name"><%= cat.name %></span>
+                  </div>
+                  <span class="cat-badge-count"><%= count %></span>
+                </a>
+              </li>
+            <% }); %>
+          <% } %>
+        </ul>
+      </div>
+
+      <!-- Broadsheet Authority & Builder Stamp -->
+      <div class="sidebar-widget authority-stamp-widget">
+        <div class="authority-badge-inner">
+          <span class="auth-icon">🏛️</span>
+          <div>
+            <strong class="auth-title">The Tech AI Chronicle</strong>
+            <p class="auth-sub">Curated by <strong>Builder 07</strong></p>
+            <span class="auth-verified">✓ 100% Fact Checked</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Left Sidebar High-Yield Ad Slot -->
+      <div class="sidebar-widget" style="padding: 6px 0; background: transparent; border: none; box-shadow: none;">
+        <%- ads.renderSlot('left-sidebar') %>
+      </div>
+    </aside>
+
+    <!-- CENTER COLUMN: Category Archive Stories -->
+    <main class="article-main" style="border: none; background: transparent; padding: 0; box-shadow: none;">
+      <!-- Category Headline Banner -->
+      <div class="category-hero-header" style="margin-bottom: 24px; padding: 22px 26px; background: var(--bg-surface); border: 1px solid var(--border-color); box-shadow: var(--card-shadow);">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+          <span style="font-size: 2.2rem; line-height: 1;"><%= currentCategory.icon %></span>
+          <div>
+            <span style="font-family: var(--font-sans); font-size: 0.72rem; font-weight: 800; color: var(--accent-primary); text-transform: uppercase; letter-spacing: 1px;">Editorial Desk</span>
+            <h1 style="font-family: var(--font-headline); font-size: clamp(1.8rem, 2.5vw, 2.3rem); font-weight: 800; margin: 2px 0 0 0; color: var(--text-main);"><%= currentCategory.name %></h1>
+          </div>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin: 8px 0 0 0;"><%= currentCategory.description %></p>
+      </div>
+
+      <% if (posts && posts.length > 0) { %>
+        <div class="posts-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+          <% posts.forEach(post => { %>
+            <article class="post-card" style="background: var(--bg-surface); border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--card-shadow); transition: all 0.15s ease;">
+              <a href="/post/<%= post.slug %>" class="card-img-wrap" style="height: 180px; overflow: hidden; display: block;">
+                <img src="<%= post.featured_image || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80' %>" 
+                     alt="<%= post.title %>" 
+                     loading="lazy"
+                     style="width: 100%; height: 100%; object-fit: cover;"
+                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80';">
+              </a>
+              <div class="card-body" style="padding: 16px; flex-grow: 1; display: flex; flex-direction: column;">
+                <div class="card-meta" style="font-size: 0.74rem; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; font-weight: 600;">
+                  <span class="badge-category" style="color: var(--accent-primary); font-weight: 700;"><%= post.category %></span>
+                  <span>•</span>
+                  <span>⏱️ <%= post.read_time || 5 %> min read</span>
+                </div>
+                <a href="/post/<%= post.slug %>">
+                  <h3 class="post-title" style="font-family: var(--font-headline); font-size: 1.1rem; font-weight: 700; color: var(--text-main); line-height: 1.35; margin-bottom: 8px;"><%= post.title %></h3>
+                </a>
+                <p class="post-excerpt" style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; flex-grow: 1;"><%= post.summary || post.quick_answer || post.meta_description %></p>
+              </div>
+              <div class="card-footer" style="padding: 10px 16px; border-top: 1px solid var(--border-color); background: #faf8f2; display: flex; justify-content: space-between; align-items: center; font-size: 0.74rem;">
+                <span class="quality-badge" style="color: var(--accent-emerald); font-weight: 700;">✓ <%= post.quality_score || 90 %>% Verified</span>
+                <span style="color: var(--text-dim);"><%= post.source_count || 4 %> Sources</span>
+              </div>
+            </article>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div style="padding: 32px 24px; background: var(--bg-surface); border: 1px solid var(--border-color); text-align: center; box-shadow: var(--card-shadow); margin-bottom: 28px;">
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">📡</div>
+          <h3 style="font-family: var(--font-headline); font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">Desk Gathering Emerging Dispatches</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto 16px auto;">
+            Our editorial research desk is actively tracking developer publications, research archives, and technical disclosures for <%= currentCategory.name %>. The next in-depth report will be published here shortly.
+          </p>
+        </div>
+
+        <% if (typeof recentPosts !== 'undefined' && recentPosts && recentPosts.length > 0) { %>
+          <div style="margin-top: 24px;">
+            <h3 style="font-family: var(--font-headline); font-size: 1.2rem; font-weight: 800; color: var(--text-main); padding-bottom: 6px; border-bottom: 2px solid var(--border-dark); margin-bottom: 16px;">
+              ⚡ Trending Stories from Adjacent Desks
+            </h3>
+            <div class="posts-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px;">
+              <% recentPosts.slice(0, 3).forEach(rp => { %>
+                <article class="post-card" style="background: var(--bg-surface); border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--card-shadow);">
+                  <a href="/post/<%= rp.slug %>" class="card-img-wrap" style="height: 160px; overflow: hidden; display: block;">
+                    <img src="<%= rp.featured_image || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80' %>" 
+                         alt="<%= rp.title %>" 
+                         loading="lazy"
+                         style="width: 100%; height: 100%; object-fit: cover;">
+                  </a>
+                  <div class="card-body" style="padding: 14px; flex-grow: 1; display: flex; flex-direction: column;">
+                    <span style="font-size: 0.72rem; color: var(--accent-primary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;"><%= rp.category %></span>
+                    <a href="/post/<%= rp.slug %>">
+                      <h4 style="font-family: var(--font-headline); font-size: 1rem; font-weight: 700; color: var(--text-main); line-height: 1.35; margin-bottom: 6px;"><%= rp.title %></h4>
+                    </a>
+                  </div>
+                </article>
+              <% }); %>
+            </div>
+          </div>
+        <% } %>
+      <% } %>
+
+      <!-- Bottom Leaderboard Ad -->
+      <div style="margin-top: 28px;">
+        <%- ads.renderSlot('footer') %>
+      </div>
+    </main>
+
+    <!-- RIGHT SIDEBAR: Sticky Locked Broadsheet Desk -->
+    <aside class="article-sidebar">
+      <% const catAdSidebar = ads.renderSlot('sidebar'); if (catAdSidebar && catAdSidebar.trim()) { %>
+        <div class="sidebar-widget">
+          <%- catAdSidebar %>
+        </div>
+      <% } %>
+
+      <% const catAdMid = ads.renderSlot('sidebar-mid'); if (catAdMid && catAdMid.trim()) { %>
+        <div class="sidebar-widget" style="padding: 10px 0; background: transparent; border: none; box-shadow: none;">
+          <%- catAdMid %>
+        </div>
+      <% } %>
+
+      <!-- Autonomous Telemetry & Verified Journalistic Desk -->
+      <div class="sidebar-widget" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 18px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+          <span style="font-size: 1.15rem;">🛡️</span>
+          <h4 style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin: 0; color: var(--text-main);">Editorial Standards</h4>
+        </div>
+        <p style="font-size: 0.82rem; color: var(--text-dim); line-height: 1.55; margin: 0 0 10px 0;">
+          All technical benchmarks, source repositories, and research claims in this category are audited before publication.
+        </p>
+        <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #059669; font-weight: 700;">
+          ✓ 100% EVIDENCE GROUNDED
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+

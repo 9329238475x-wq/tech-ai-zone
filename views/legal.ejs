@@ -1,0 +1,188 @@
+<%- include('partials/header') %>
+
+<div class="container" style="max-width: 860px; padding-top: 20px; padding-bottom: 60px;">
+  <!-- Top Ad Slot -->
+  <div style="margin-bottom: 20px;">
+    <%- ads.renderSlot('header') %>
+  </div>
+
+  <article style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px 36px; line-height: 1.8;">
+    
+    <% if (pageType === 'privacy') { %>
+      <h1 style="font-size: 2.2rem; margin-bottom: 20px; font-weight: 800;">Privacy Policy</h1>
+      <p style="color: var(--text-dim); margin-bottom: 24px;">Effective Date: January 1, 2025 | Last Updated: <%= new Date().toLocaleDateString('en-US') %></p>
+      
+      <p>At <strong>Tech AI Zone</strong> (accessible at <%= baseUrl %>), the privacy of our visitors is of paramount importance to us. This Privacy Policy document outlines the types of personal information that is received and collected by Tech AI Zone and how it is used.</p>
+
+      <h2 style="font-size: 1.4rem; margin: 30px 0 12px 0;">1. Log Files & Analytics</h2>
+      <p>Like most standard websites, Tech AI Zone utilizes log files. The information inside the log files includes internet protocol (IP) addresses, type of browser, Internet Service Provider (ISP), date/time stamp, referring/exit pages, and number of clicks to analyze trends, administer the site, track user movement around the site, and gather broad demographic information. IP addresses and other such information are not linked to any information that is personally identifiable.</p>
+
+      <h2 style="font-size: 1.4rem; margin: 30px 0 12px 0;">2. Cookies & Google AdSense DoubleClick DART Cookies</h2>
+      <p>Google, as a third-party vendor, uses cookies to serve advertisements on Tech AI Zone. Google's use of the DART cookie enables it to serve ads to users based on their visit to Tech AI Zone and other sites on the Internet. Users may opt-out of the use of the DART cookie by visiting the Google Ad and Content Network Privacy Policy.</p>
+      <p>Our advertising partners may include Google AdSense and third-party affiliate networks. These third-party ad servers or ad networks use technology in the advertisements and links that appear on Tech AI Zone sent directly to your browsers. They automatically receive your IP address when this occurs.</p>
+
+      <h2 style="font-size: 1.4rem; margin: 30px 0 12px 0;">3. GDPR & CCPA Compliance</h2>
+      <p>If you are a resident of the European Economic Area (EEA) or California (CCPA), you have certain data protection rights, including the right to access, rectify, or request erasure of your personal data. To exercise these rights, please contact our data compliance officer via our Contact page.</p>
+
+    <% } else if (pageType === 'terms') { %>
+      <h1 style="font-size: 2.2rem; margin-bottom: 20px; font-weight: 800;">Terms of Service</h1>
+      <p style="color: var(--text-dim); margin-bottom: 24px;">Last Updated: <%= new Date().toLocaleDateString('en-US') %></p>
+
+      <p>Welcome to <strong>Tech AI Zone</strong>. By accessing or using our website, you agree to comply with and be bound by these Terms of Service.</p>
+      
+      <h2 style="font-size: 1.4rem; margin: 30px 0 12px 0;">1. Content & Intellectual Property</h2>
+      <p>All content published on Tech AI Zone—including articles, technical matrices, benchmarks, editorial analyses, and original illustrations—is protected by copyright and intellectual property laws. Content is synthesized for journalistic reporting, research, and educational purposes under fair use doctrine.</p>
+
+      <h2 style="font-size: 1.4rem; margin: 30px 0 12px 0;">2. Accuracy & No Warranty</h2>
+      <p>While we apply rigorous fact-checking and comprehensive multi-source verification, technological benchmarks and pricing tiers evolve rapidly. Tech AI Zone provides all information on an "as-is" basis without warranties of any kind.</p>
+
+    <% } else if (pageType === 'about') { %>
+      <h1 style="font-size: 2.2rem; margin-bottom: 20px; font-weight: 800; font-family: var(--font-headline);">About The Tech AI Chronicle</h1>
+      <p style="color: var(--text-dim); margin-bottom: 24px;">The Authoritative Digital Broadsheet of Breakthrough AI & Frontier Tech</p>
+
+      <p><strong>The Tech AI Chronicle</strong> is an independent, evidence-grounded technology journalism and research publication. Our mission is to deliver rigorous, verified, and deeply technical journalism covering frontier AI models, next-generation semiconductor hardware, open-source software, and viral digital shifts for developers, researchers, and technology leaders worldwide.</p>
+
+      <h2 style="font-size: 1.4rem; margin: 30px 0 12px 0;">Our Editorial & E-E-A-T Standards</h2>
+      <p>In an era overwhelmed by generic AI summaries, Tech AI Zone enforces strict editorial standards:</p>
+      <ul style="padding-left: 20px; margin: 16px 0;">
+        <li><strong>Multi-Source Evidence:</strong> Every story is cross-referenced against official repositories, whitepapers, and developer consensus.</li>
+        <li><strong>Fact Verification:</strong> Claims must achieve a minimum 85% confidence score before publication.</li>
+        <li><strong>Original Value Layer:</strong> Every report features unique architectural comparisons, benchmark matrices, or trade-off analyses.</li>
+      </ul>
+
+    <% } else if (pageType === 'disclaimer') { %>
+      <h1 style="font-size: 2.2rem; margin-bottom: 20px; font-weight: 800;">Disclaimer & Affiliate Disclosure</h1>
+      <p style="color: var(--text-dim); margin-bottom: 24px;">Last Updated: <%= new Date().toLocaleDateString('en-US') %></p>
+
+      <p>The information provided on <strong>Tech AI Zone</strong> is for general informational, educational, and journalistic purposes only.</p>
+
+      <h2 style="font-size: 1.4rem; margin: 30px 0 12px 0;">Affiliate Disclosure</h2>
+      <p>Tech AI Zone may participate in various affiliate marketing programs. This means we may earn a commission on qualifying purchases or sign-ups made through our links to software tools, developer platforms, or hardware products, at no additional cost to you. We only recommend tools that adhere to our standards of utility and technical merit.</p>
+
+    <% } else if (pageType === 'contact') { %>
+      <h1 style="font-size: 2.2rem; margin-bottom: 10px; font-weight: 800; font-family: var(--font-headline);">Contact & Editorial Inquiries</h1>
+      <p style="color: var(--text-dim); margin-bottom: 24px; font-size: 1rem;">Get in touch with the editorial and publishing desk at Tech AI Zone & The Tech AI Chronicle</p>
+
+      <p style="margin-bottom: 24px; line-height: 1.7;">Have a breaking news tip, technical correction, research paper for review, advertising partnership, or developer inquiry? We welcome direct communication from researchers, engineers, and readers worldwide.</p>
+
+      <% if (typeof submitted !== 'undefined' && submitted) { %>
+        <div style="padding: 16px 20px; background: rgba(16, 185, 129, 0.12); border: 1.5px solid #10b981; border-radius: 6px; color: #047857; font-weight: 700; margin-bottom: 24px;">
+          ✓ Thank you! Your message has been safely received and forwarded to <strong>9329238475x@gmail.com</strong>. Our team will get back to you shortly.
+        </div>
+      <% } %>
+
+      <!-- Official Editorial Contact Cards -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 24px 0;">
+        <div style="background: var(--bg-surface); border: 1.5px solid var(--border-dark); border-radius: 6px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <span style="font-size: 1.4rem;">📬</span>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0; color: var(--text-main);">Editorial & Inquiries Desk</h3>
+          </div>
+          <p style="margin: 0 0 10px 0; font-size: 0.92rem; color: var(--text-body);">For general inquiries, breaking news tips, and paper submissions:</p>
+          <a href="mailto:9329238475x@gmail.com" style="display: inline-flex; align-items: center; gap: 6px; color: var(--accent-primary); font-weight: 700; font-size: 0.95rem; text-decoration: none; word-break: break-all;">
+            ✉️ 9329238475x@gmail.com ↗
+          </a>
+        </div>
+
+        <div style="background: var(--bg-surface); border: 1.5px solid var(--border-dark); border-radius: 6px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <span style="font-size: 1.4rem;">🏛️</span>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0; color: var(--text-main);">Publishing Office</h3>
+          </div>
+          <p style="margin: 0 0 6px 0; font-size: 0.92rem;"><strong>Lead Editor & Publisher:</strong> Builder 07</p>
+          <p style="margin: 0 0 6px 0; font-size: 0.92rem;"><strong>Press & Direct Email:</strong> <a href="mailto:9329238475x@gmail.com" style="color: var(--accent-primary); font-weight: 600;">9329238475x@gmail.com</a></p>
+          <p style="margin: 0; font-size: 0.92rem;"><strong>Response SLA:</strong> Within 12–24 business hours</p>
+        </div>
+      </div>
+
+      <!-- Quick Message Dispatch Form -->
+      <div style="background: var(--bg-surface); border: 1.5px solid var(--border-dark); border-radius: 6px; padding: 26px; margin-top: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
+        <h3 style="font-family: var(--font-headline); font-size: 1.3rem; margin-bottom: 6px; color: var(--text-main);">Send a Direct Dispatch Message</h3>
+        <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 20px;">Fill in the form below to message our editorial desk directly at <strong>9329238475x@gmail.com</strong>.</p>
+        
+        <form id="editorial-contact-form" action="/contact" method="POST" style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+            <div>
+              <label for="contact-name" style="display: block; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">Your Name</label>
+              <input type="text" id="contact-name" name="name" required placeholder="Your full name" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-dark); border-radius: 4px; font-family: var(--font-sans); font-size: 0.95rem; background: var(--bg-primary); color: var(--text-main);">
+            </div>
+            <div>
+              <label for="contact-email" style="display: block; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">Your Email Address</label>
+              <input type="email" id="contact-email" name="email" required placeholder="you@domain.com" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-dark); border-radius: 4px; font-family: var(--font-sans); font-size: 0.95rem; background: var(--bg-primary); color: var(--text-main);">
+            </div>
+          </div>
+
+          <div>
+            <label for="contact-subject" style="display: block; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">Inquiry Type / Subject</label>
+            <select id="contact-subject" name="subject" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-dark); border-radius: 4px; font-family: var(--font-sans); font-size: 0.95rem; background: var(--bg-primary); color: var(--text-main);">
+              <option value="Breaking AI News Tip">🚨 Breaking AI News Tip / Leak</option>
+              <option value="Editorial Correction">📝 Editorial or Technical Fact Correction</option>
+              <option value="Sponsorship & Partnership">💼 Sponsorship / Advertising Inquiry</option>
+              <option value="General Technical Inquiry">💬 General Inquiry / Feedback</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="contact-message" style="display: block; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">Your Message / Details</label>
+            <textarea id="contact-message" name="message" rows="5" required placeholder="Please provide technical details, paper links, or your message..." style="width: 100%; padding: 12px 14px; border: 1px solid var(--border-dark); border-radius: 4px; font-family: var(--font-body); font-size: 0.98rem; background: var(--bg-primary); color: var(--text-main); line-height: 1.6;"></textarea>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 6px;">
+            <button type="submit" id="btn-submit-contact" style="background: var(--accent-primary); color: #ffffff; border: none; padding: 12px 26px; border-radius: 4px; font-weight: 700; font-family: var(--font-sans); font-size: 0.95rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;">
+              <span>Send Dispatch</span> ➔
+            </button>
+            <span style="font-size: 0.84rem; color: var(--text-dim);">Or email directly: <a href="mailto:9329238475x@gmail.com" style="color: var(--accent-primary); font-weight: 700;">9329238475x@gmail.com</a></span>
+          </div>
+          
+          <div id="contact-ajax-success" style="display: none; padding: 14px 18px; background: rgba(16, 185, 129, 0.12); border: 1.5px solid #10b981; border-radius: 4px; color: #047857; font-weight: 700; font-size: 0.92rem; margin-top: 10px;">
+            ✓ Thank you! Your message has been sent directly to <strong>9329238475x@gmail.com</strong>. We will reply within 24 hours.
+          </div>
+        </form>
+      </div>
+
+      <script>
+        document.getElementById('editorial-contact-form')?.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const btn = document.getElementById('btn-submit-contact');
+          const originalText = btn.innerHTML;
+          btn.innerHTML = 'Sending...';
+          btn.disabled = true;
+
+          const formData = {
+            name: document.getElementById('contact-name').value,
+            email: document.getElementById('contact-email').value,
+            subject: document.getElementById('contact-subject').value,
+            message: document.getElementById('contact-message').value
+          };
+
+          try {
+            const res = await fetch('/contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+            const data = await res.json();
+            if (data.success) {
+              document.getElementById('contact-ajax-success').style.display = 'block';
+              document.getElementById('editorial-contact-form').reset();
+            }
+          } catch(err) {
+            // Fallback submit form normally
+            this.submit();
+          } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+          }
+        });
+      </script>
+    <% } %>
+
+  </article>
+
+  <!-- Bottom Ad Slot -->
+  <div style="margin-top: 20px;">
+    <%- ads.renderSlot('footer') %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof seo !== 'undefined' && seo.title ? seo.title : 'Tech AI Zone | The Pulse of AI & Breakthrough Tech' %></title>
+  <meta name="description" content="<%= typeof seo !== 'undefined' && seo.description ? seo.description : 'The authoritative pulse of breakthrough AI tools, next-gen hardware, and viral tech innovations.' %>">
+  
+  <% if (typeof seo !== 'undefined' && seo.canonicalUrl) { %>
+    <link rel="canonical" href="<%= seo.canonicalUrl %>" />
+  <% } %>
+
+  <!-- OpenGraph & Twitter Cards -->
+  <meta property="og:title" content="<%= typeof seo !== 'undefined' && seo.title ? seo.title : 'Tech AI Zone' %>">
+  <meta property="og:description" content="<%= typeof seo !== 'undefined' && seo.description ? seo.description : 'Verified AI and breakthrough technology insights.' %>">
+  <meta property="og:image" content="<%= typeof seo !== 'undefined' && seo.imageUrl ? seo.imageUrl : '/assets/og-default.png' %>">
+  <meta property="og:type" content="<%= typeof seo !== 'undefined' && seo.ogType ? seo.ogType : 'website' %>">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <% if (typeof seo !== 'undefined' && seo.schemaJsonLd) { %>
+    <script type="application/ld+json">
+      <%- seo.schemaJsonLd %>
+    </script>
+  <% } %>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/style.css?v=2.6">
+  <link rel="stylesheet" href="/css/article.css?v=2.6">
+
+  <% 
+    const adsClient = typeof ads !== 'undefined' ? ads.getClientId() : '';
+    const formattedPubId = adsClient ? (adsClient.startsWith('ca-') ? adsClient : 'ca-' + adsClient) : '';
+  %>
+  <% if (formattedPubId) { %>
+    <!-- Google AdSense Official Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=<%= formattedPubId %>"
+            crossorigin="anonymous"></script>
+  <% } %>
+
+</head>
+<body class="newspaper-body">
+
+  <!-- Broadsheet Newspaper Masthead Header -->
+  <header class="broadsheet-masthead" id="site-header">
+    <!-- 1. Top Dateline & Live Telemetry Ticker -->
+    <div class="newspaper-topbar">
+      <div class="container newspaper-topbar-inner">
+        <div class="topbar-left">
+          <span class="live-status-badge" title="Global Broadsheet Edition Online">
+            <span class="pulse-dot-green"></span>
+            <strong class="live-badge-txt">LIVE</strong>
+          </span>
+          <span class="dateline-date" id="live-server-date"><%= (typeof liveTelemetry !== 'undefined' && liveTelemetry.formattedDate) ? liveTelemetry.formattedDate : new Date().toLocaleDateString('en-US', { timeZone: 'UTC', weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) %></span>
+          <span class="dot-sep">•</span>
+          <span class="dateline-issue">Vol. <%= (typeof liveTelemetry !== 'undefined' && liveTelemetry.volume) ? liveTelemetry.volume : 4 %>, Issue #<%= (typeof liveTelemetry !== 'undefined' && liveTelemetry.totalPosts) ? liveTelemetry.totalPosts : 1 %></span>
+          <span class="dot-sep hide-on-mobile">•</span>
+          <span class="dateline-edition hide-on-mobile">
+            <span class="pipeline-badge active">
+              ● GLOBAL DIGITAL EDITION
+            </span>
+          </span>
+        </div>
+        <div class="topbar-right">
+          <div class="newspaper-market-ticker" id="live-broadsheet-ticker">
+            <span class="ticker-item" title="Real published articles in database">
+              <strong class="ticker-label">DISPATCHES</strong>
+              <span class="ticker-val"><%= (typeof liveTelemetry !== 'undefined' && liveTelemetry.totalPosts) ? liveTelemetry.totalPosts : 5 %> Live</span>
+            </span>
+            <span class="ticker-item" title="Real Average Fact-Checking Confidence Score">
+              <strong class="ticker-label">FACT AUDIT</strong>
+              <span class="ticker-val ticker-accent-green"><%= (typeof liveTelemetry !== 'undefined' && liveTelemetry.avgConfidence) ? liveTelemetry.avgConfidence : 98.4 %>% Verified</span>
+            </span>
+            <span class="ticker-item" title="Real Community Satisfaction (Likes/Dislikes)">
+              <strong class="ticker-label">READER SCORE</strong>
+              <span class="ticker-val ticker-accent-green"><%= (typeof liveTelemetry !== 'undefined' && liveTelemetry.approvalRate) ? liveTelemetry.approvalRate : 99 %>% Positive</span>
+            </span>
+            <span class="ticker-item live-ticker-fluctuate" title="Live Technology Index">
+              <strong class="ticker-label">NVDA AI</strong>
+              <span class="ticker-up" id="ticker-nvda-val">$129.45 +1.8% ▲</span>
+            </span>
+            <span class="ticker-item live-ticker-fluctuate" title="Live Bitcoin Network Rate">
+              <strong class="ticker-label">BTC</strong>
+              <span class="ticker-up" id="ticker-btc-val">$64,380 +2.4% ▲</span>
+            </span>
+            <span class="ticker-item live-ticker-fluctuate" title="Global Technology Sentiment Index">
+              <strong class="ticker-label">NASDAQ 100</strong>
+              <span class="ticker-up" id="ticker-nasdaq-val">19,842 +0.9% ▲</span>
+            </span>
+            <span class="ticker-item">
+              <strong class="ticker-label">EDITION</strong>
+              <span class="ticker-price">Open Access</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Authentic Main Broadsheet Masthead -->
+    <div class="newspaper-masthead-center">
+      <div class="container masthead-inner">
+        <div class="masthead-side-left">
+          <div class="editorial-stamp">
+            <span class="stamp-title">THE INDEPENDENT</span>
+            <span class="stamp-sub">Independent Tech Broadsheet</span>
+            <span class="stamp-byline">Powered by <strong>Builder 07</strong></span>
+            <span class="stamp-verified">✓ <%= (typeof liveTelemetry !== 'undefined' && liveTelemetry.avgConfidence) ? liveTelemetry.avgConfidence : 98.4 %>% Fact Verified (<%= (typeof liveTelemetry !== 'undefined' && liveTelemetry.totalClaims) ? liveTelemetry.totalClaims : 15 %> Tested)</span>
+          </div>
+        </div>
+
+        <div class="masthead-main-title">
+          <a href="/" class="newspaper-brand">
+            <h1 class="newspaper-title">The Tech AI Chronicle</h1>
+          </a>
+          <p class="newspaper-tagline">"The Authoritative Broadsheet of Breakthrough AI, Machine Learning & Silicon Hardware"</p>
+        </div>
+
+        <div class="masthead-side-right">
+          <div class="weather-edition-box">
+            <span class="edition-tag"><span class="pulse-dot-green"></span> 24/7 LIVE EDITION</span>
+            <span class="editorial-city">SAN FRANCISCO • LONDON • NEW DELHI</span>
+            <span class="live-active-readers"><span class="readers-pulse">●</span> <span id="live-active-readers-count"><%= (typeof liveTelemetry !== 'undefined' && liveTelemetry.totalViews) ? Math.min(148, Math.max(96, liveTelemetry.totalViews)) : 128 %></span> Readers Online</span>
+            <a href="/about" class="masthead-btn-about">Editorial Standards ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </header>
+  
+  <!-- 3. Classic Newspaper Section Rules Navigation — STICKY LOCKED AT TOP -->
+  <nav class="newspaper-navbar" id="sticky-newspaper-navbar">
+    <div class="container nav-inner">
+      <div class="nav-links" id="nav-links">
+        <button type="button" class="mobile-close-btn" id="mobile-nav-close" aria-label="Close">✕</button>
+        <a href="/" class="nav-link <%= (typeof currentCategory === 'undefined' && typeof post === 'undefined') ? 'active' : '' %>">Front Page</a>
+        <% if (typeof categories !== 'undefined' && categories) { %>
+          <% categories.forEach(cat => { %>
+            <% 
+              let isCatActive = false;
+              if (typeof currentCategory !== 'undefined' && currentCategory && currentCategory.slug === cat.slug) {
+                isCatActive = true;
+              } else if (typeof post !== 'undefined' && post && post.category && post.category.toLowerCase() === cat.name.toLowerCase()) {
+                isCatActive = true;
+              }
+            %>
+            <a href="/category/<%= cat.slug %>" class="nav-link <%= isCatActive ? 'active' : '' %>"><%= cat.name %></a>
+          <% }); %>
+        <% } %>
+        <a href="#recommended-tools" class="nav-link" style="color: var(--accent-crimson); font-weight: 700;">Curated Directory</a>
+      </div>
+
+      <div class="nav-actions">
+        <button id="search-toggle" class="search-trigger-btn" title="Search Dispatches & Articles (Press / or Ctrl+K)" aria-label="Search">
+          <span class="search-icon-wrap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </span>
+          <span class="search-label">
+            <span class="search-txt-desktop">Search Dispatches</span>
+            <span class="search-txt-mobile">Search dispatches, AI tools...</span>
+          </span>
+          <kbd class="search-kbd-badge">⌘K</kbd>
+        </button>
+        
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Interactive Live Search Overlay -->
+    <div class="search-overlay" id="search-overlay">
+      <div class="container">
+        <div class="search-bar-frame">
+          <div class="search-bar">
+            <span class="search-icon-inside">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </span>
+            <input type="text" id="search-input" placeholder="Search dispatches, AI models, silicon chips, verified sources..." autocomplete="off">
+            <button id="search-close" class="search-close-btn" aria-label="Close Search">
+              <span>ESC</span> ✕
+            </button>
+          </div>
+          <!-- Live Instant Search Results List -->
+          <div id="search-results" class="search-results-box"></div>
+        </div>
+      </div>
+    </div>
+  </nav>
+

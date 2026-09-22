@@ -1,0 +1,9 @@
+node_modules/
+.env
+.env.local
+*.log
+scratch/
+data/tech_ai_zone.sqlite-journal
+data/tech_ai_zone.sqlite-wal
+data/tech_ai_zone.sqlite-shm
+.DS_Store
